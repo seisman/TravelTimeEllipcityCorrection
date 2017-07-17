@@ -1,22 +1,30 @@
-#
-IASQ=emtvelin.o
-TAUL=libtau.o libsun.o
-#
 #  path of executables
-BIN = 
-#
-#  resampling of model 
+BIN = .
+FC=gfortran
+TAUL=libtau.o libsun.o
+
+all: remodlv setbrn ttimes ttimel direct
+
+#  resampling of model
 REM = remodl.o
-remodlv: $(REM) $(TAUL) $(IASQ)
-	f77 -o $(BIN)remodlv $(REM) $(IASQ) $(TAUL)
-#
+remodlv: remodl.o emtvelin.o $(TAUL)
+	$(FC) -o $(BIN)/$@ $^
+
 #  set branches  program
-SBR = setbrn.o
-setbrn: $(SBR) $(TAUL) 
-	f77 -o $(BIN)setbrn $(SBR) $(TAUL)
-#
+setbrn: setbrn.o $(TAUL)
+	$(FC) -o $(BIN)/$@ $^
+
 # travel time branches program
-TBR =  ttimes.o       
-ttimes: $(TBR) $(TAUL)
-	f77 -o $(BIN)ttimes $(TBR) $(TAUL)
-#
+ttimes: ttimes.o $(TAUL)
+	$(FC) -o $(BIN)/$@ $^
+
+# ellipticity correction to travel times
+ttimel: ttimel.o ellip.o $(TAUL)
+	$(FC) -o $(BIN)/$@ $^
+
+# direct access conversion of ellipticity corrections
+direct: direct.o
+	$(FC) -o $(BIN)/$@ $^
+
+clean:
+	rm *.o

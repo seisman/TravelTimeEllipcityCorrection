@@ -252,7 +252,8 @@ c   Find where the source slowness falls in the ray parameter array.
  3    continue
       k2=n1
       if(pu(n1,nph).eq.umin) go to 50
-      call abort('Source slowness too large.')
+      print *, 'Source slowness too large.'
+      call abort()
  4    k2=i
 c50   write(10,*)'k2 umin',k2,sngl(umin)
 c
@@ -599,7 +600,8 @@ c
       write(msg,100)dep
       write(6,100)dep
  100  format('Source depth (',f6.1,') too deep.')
-      call abort(msg)
+      print *, msg
+      call abort()
  2    if(dabs(zs-zm(i,nph)).le.dtol.and.dabs(zm(i,nph)-zm(i+1,nph)).le.
      1 dtol) go to 3
       j=i-1
@@ -1402,7 +1404,8 @@ c
       logical log
       character*(*) ia,ib
 c
-      if(iargc(i).lt.n) go to 1
+c      if(iargc(i).lt.n) go to 1
+      if(iargc().lt.n) go to 1
       call getarg(n,ib)
       go to 2
 c
