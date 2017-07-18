@@ -62,7 +62,7 @@ c                                      input from command line
        call getarg(1,arg1)
        read(arg1,*) tvelnam
        name = tvelnam
-       filespec = tvelnam//".tvel"
+       filespec = trim(tvelnam)//".tvel"
 c
       close(unit=13)
       call assign(13,1,filespec)
